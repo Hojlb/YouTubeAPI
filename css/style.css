@@ -1,0 +1,112 @@
+@mixin font-base {
+  padding: 0;
+  margin: 0;
+  line-height: 1.3;
+  font-weight: 600;
+}
+
+html, body {
+  height: 100%;
+  margin: 0 auto;
+  max-width: 1150px;
+}
+
+.container {
+  min-height: 100%;
+  background-color: #fff;
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+}
+
+footer {
+  background-color: tomato;
+  height: 80px;
+}
+
+h4 {
+  @include font-base;
+}
+
+p {
+  @include font-base;
+  color: grey;
+  font-size: 0.7rem;
+}
+
+body {
+  background-color: #eee;
+      margin: 0 auto;
+}
+
+header {
+  position: fixed;
+  text-align: center;
+  width: inherit;
+  background-color: #fff;
+  height: 50px;
+}
+
+#video {
+  top: 100px;
+}
+
+.logo {
+  height: 40px;
+  width: auto;
+  zoom: 1.8;
+}
+
+article {
+  display: flex;
+  align-items: center;
+  padding: 1px 12px;
+  border: 2px solid white;
+  border-radius: 8px;
+  margin: 0 auto;
+}
+
+article:hover {
+  border: 2px solid #ff9999;
+}
+
+.thumb {
+  height: 70px;
+  border-radius: 8px;
+}
+
+.details {
+  padding: 0 12px;
+}
+
+.search-line {
+  width: 500px;
+  margin: 0 5px;
+}
+
+.search-line input{
+  background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwHpO_pLCrNzQz5xZ03w89uIzMwqFC-2iSXVdbLpX9S-7y12DAnw');
+  background-repeat: no-repeat;
+  background-size: 35px;
+  background-position: 1px 25%;
+  padding: 0 10px 0 44px;
+  height: 40px;
+  width: 100%;
+
+  border: solid 1px #ccc;
+  border-radius: 3px;
+  box-sizing: border-box;
+  outline: 0;
+
+  font-size: 14px;
+}
+
+.logo-line {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  max-height: 50px;
+  box-sizing: border-box;
+}
