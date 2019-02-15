@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="css/style.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="script/index.js"></script>
-
   </head>
   <body>
     <div class="container">
@@ -36,18 +35,12 @@
           </form>
         </section>
 
-        <section class="user-bar">
-          <button type="button" name="" class="b-options-search">
-              <img src="icon/settings.png" alt="">
-          </button>
-        </section>
-
       <section class="search-settings">
         <form action="" method="">
           <h2>Search Field Settings</h2>
           <hr>
           <section class="type-search">
-            <h2>Type</h2>
+            <h3>Type</h3>
             <ul>
               <li>
             <input type="radio" id="typeChannel" name="type" value="channel">
@@ -58,22 +51,22 @@
             <label for="typePlaylist">playlist</label>
           </li>
           <li>
-            <input type="radio" id="typeVideo" name="type" value="video" checked>
+            <input type="radio" id="typeVideo" name="type" value="video">
             <label for="typeVideo">video</label>
             </li>
-          </section>
-          <hr>
+            <hr>
+        </section>
 
           <section >
-            <h2>Number of search results</h2>
+            <h3>Number of search results</h3>
 
             <section class="range-results">
               <input type="range" id="rangeResults" name="rangeResults" value=5 required min="1" max="15" step="1">
               <label for="rangeResults" id='rangeDisplay'>5</label>
             </section>
+            <hr>
 
           </section>
-          <hr>
 
         </form>
       </section>
@@ -85,6 +78,5 @@
 
       <footer></footer>
     </div>
-      <script type="text/javascript" src="script/decoration.js"></script>
   </body>
 </html>
