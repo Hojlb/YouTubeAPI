@@ -1,4 +1,6 @@
 'use strict';
+
+// this cod determine action of the settings button
 let posSettings = 0;
 
   $('.b-options-search').click(function () {

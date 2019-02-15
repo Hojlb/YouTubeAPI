@@ -2,7 +2,6 @@
 
 $(document).ready(function(){
   //Code here
-  const key = 'AIzaSyDESXpqfADkPJ0I851gH1BsjIGU57I7m58';
   let playlistId = 'PLWKjhJtqVAbkyK9woUZUtunToLtNGoQHB';
   let URL = 'https://www.googleapis.com/youtube/v3/playlistItems';
   let searchURL = 'https://www.googleapis.com/youtube/v3/search';
@@ -77,7 +76,8 @@ loadVids();
         let vid = item.snippet.resourceId.videoId;
 
         $('main').append(`<article class="item" data-key="${vid}">
-          <img src="${thumb}" alt="playlists member" class="thumb">        </img>
+          <img src="${thumb}" alt="playlists member" class="thumb">
+
           <div class="details">
           <h4>${title}</h4>
           <p>${desc}</p>

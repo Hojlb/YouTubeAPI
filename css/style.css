@@ -64,7 +64,7 @@ main {
 
 footer {
   grid-area: footer;
-  background-color: tomato;
+  background-color:  #ff0000;
   height: 40px;
   width: 100%;
 }
@@ -134,10 +134,12 @@ article:hover {
   right: -280px;
   top: 90px;
   width: 238px;
-  background-color: rgba(203, 215, 227, 0.95);
+  background-color: #ffffff;
   padding: 0 10px;
   display: inline-block;
   box-sizing: border-box;
+
+  border: 2px solid #ff0000;
   border-radius: 0 0 0 6%;
 }
 
