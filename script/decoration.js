@@ -1,28 +1,37 @@
 'use strict';
 
 // this cod determine action of the settings button
-let posSettings = 0;
+let posSettings = true;
+
+function hideElement(elem, time, offset) {
+  elem.animate({
+    "right": `${offset}`
+  }, time);
+}
 
   $('.b-options-search').click(function () {
 
-    if(posSettings == 0){
+    if(posSettings){
 
       $('.b-options-search img').attr("style", "transform:rotate(-180deg)");
+      hideElement( $('.search-settings'), 2000, "5px" );
 
-      $('.search-settings').animate({
-        "right": "5px"
-      }, 2000);
-
-      posSettings = 1;
+      posSettings = false;
 
     } else {
       $('.b-options-search img').attr("style", "transform:rotate(180deg)");
+      hideElement( $('.search-settings'), 2000, "-280px" );
 
-      $('.search-settings').animate({
-        "right": "-280px"
-      }, 2000);
-
-      posSettings = 0;
+      posSettings = true;
     };
 
   });
+
+  $('#rangeResults').on('input', displayRangeData);
+
+  const rangeDisplay = $('#rangeDisplay');
+
+  function displayRangeData() {
+    let value = $(this).val();
+    rangeDisplay.prop('textContent', value);
+  }

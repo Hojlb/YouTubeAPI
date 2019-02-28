@@ -5,9 +5,9 @@
     <title>Youtube API</title>
     <link rel="stylesheet" href="css/style.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script type="text/javascript" src="script/index.js"></script>
 
   </head>
+
   <body>
     <div class="container">
 
@@ -24,12 +24,13 @@
       </header>
 
         <section class="search-line">
-          <form class="" action="" method="POST" autocomplete="on">
+          <form class="" autocomplete="on" onsubmit="loadVids(); return false">
             <input
               type="text"
-              name="search"
+              name="q"
               class="search"
               placeholder="Awesome Javascript"
+              value=""
             />
 
             <input type="submit" name="" value="submit" class="submit-button" />
@@ -61,6 +62,10 @@
             <input type="radio" id="typeVideo" name="type" value="video" checked>
             <label for="typeVideo">video</label>
             </li>
+            <li>
+              <input type="radio" id="typeVideo" name="type" value="" >
+              <label for="typeVideo">All</label>
+              </li>
           </section>
           <hr>
 
@@ -68,7 +73,7 @@
             <h2>Number of search results</h2>
 
             <section class="range-results">
-              <input type="range" id="rangeResults" name="rangeResults" value=5 required min="1" max="15" step="1">
+              <input type="range" id="rangeResults" name="rangeResults" value=7 min="5" max="15" step="1">
               <label for="rangeResults" id='rangeDisplay'>5</label>
             </section>
 
@@ -79,12 +84,22 @@
       </section>
 
       <main>
-        <section id="video"></section>
+        <div>
+<!--
+          title (clickable link to YouTube)
+          clip preview as a picture
+          description
+          author
+          publication date
+          view rate (count) -->
+
+        </div>
 
       </main>
 
       <footer></footer>
     </div>
       <script type="text/javascript" src="script/decoration.js"></script>
+      <script type="text/javascript" src="script/index.js"></script>
   </body>
 </html>

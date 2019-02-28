@@ -1,86 +1,114 @@
 'use strict';
+//
+// $(document).ready(function(){
 
-$(document).ready(function(){
-  //Code here
-  let playlistId = 'PLWKjhJtqVAbkyK9woUZUtunToLtNGoQHB';
-  let URL = 'https://www.googleapis.com/youtube/v3/playlistItems';
+  // let playlistId = 'PLWKjhJtqVAbkyK9woUZUtunToLtNGoQHB';
+  const key= 'AIzaSyCTWC75i70moJLzyNh3tt4jzCljZcRkU8Y';
+  let playlistURL = 'https://www.googleapis.com/youtube/v3/playlistItems';
   let searchURL = 'https://www.googleapis.com/youtube/v3/search';
-  let channelURL = 'https://www.googleapis.com/youtube/v3/playlists';
-  //https://www.googleapis.com/youtube/v3/channelSections
-
-  let rangeDisplay = $('#rangeDisplay');
-
-  // buildApiRequest('GET',
-  //               '/youtube/v3/search',
-  //               {'maxResults': '25',
-  //                'part': 'snippet',
-  //                'q': 'surfing',
-  //                'type': ''});
-
-$('#rangeResults').on("input", displayRangeData);
-
-function displayRangeData() {
-  let value = $(this).val();
-  rangeDisplay.prop('textContent', value);
-}
+  //let videoId = 'nq4aU9gmZQk,REu2BcnlD34,qbPTdW7KgOg';
 
   let options = {
-    part: 'snippet',
     key: key,
-    maxResults: 5,
-    playlistId: playlistId,
-    q: 'how its made',
-    type: ''
+    part: 'snippet' // plus contentDetails, statistics
+  //  id: videoId,
   };
 
-  let optionsChannel={
-    part: 'snippet',
-    channelId: ''
-  };
+// must be called, when the submit button is push
+//$('.search-line form').on('click', ()=>console.log(hello));
+
+function optionSearch() {
+  options.type = $('.type-search input:checked').val();
+  options.maxResults = $('#rangeResults').val();
+
+  let textRequire = $('.search-line input[name="q"]').val();
+
+  if ( !textRequire ) {
+    options.q = 'javascript';
+  } else if( textRequire.length > 20 ){
+    options.q = textRequire.split(0, 20);
+  } else {
+       options.q = textRequire;
+   }
+};
 
 loadVids();
 
-  function loadVids() {
-      $.getJSON(searchURL, options, function(data){
-        console.log(data);
-        // let id = data.items[0].snippet.resourceId.videoId;
-        let id = data.items[0].snippet.channelId;
-        console.log(id);
-
-        optionsChannel.channelId = `${id}`;
-        console.log(optionsChannel);
-
-        representChannelPlaylists();
-
-        //mainVid(id);
-
-        //resultsLoop(data);
-      })
-  };
-
-  function representChannelPlaylists() {
-    $.getJSON(channelURL, optionsChannel, function(channelPlaylists){
-      console.log(channelPlaylists);
+function videoPicker(data) {
+  let videoStream = [];
+  console.log(data);
+  data.items.forEach( (i) => {
+    videoStream.push({
+      id: `${i.id.videoId}`,
+      videoTitle: `${i.snippet.title}`,
+      videoDescription: `${i.snippet.description}`,
+      publishedAt: `${i.snippet.publishedAt}`,
+      channelId: `${i.snippet.channelId}`,
+      channelTitle: `${i.snippet.channelTitle}`,
+      clipPreview: `${i.snippet.thumbnails.medium.url}`
     });
+
+  });
+  return videoStream;
+};
+
+function loadVids() {
+
+      optionSearch();
+      console.log(`I search: ${options.q} - ${options.type}`);
+      $('main *').remove();
+
+      $.getJSON(searchURL, options, function(data){
+        let videoStream = videoPicker(data);
+        mainVid(videoStream[0].id);
+        resultsLoop(videoStream);
+      });
   };
+
 
   function mainVid(id) {
+    $('main').append(`<section id="video"></section>`);
+    $('main').append(`<div id="videoWrapper"></div>`);
     $('#video').html(`<iframe width="680" height="385" src="https://www.youtube.com/embed/${id}" frameborder="0" allowfullscreen> </iframe>`);
+
+
+    let videoData = 'https://www.googleapis.com/youtube/v3/videos';
+    let videoOptions = {key: key,
+      id: id,
+                 'part': 'statistics'};
+
+    $.getJSON(videoData, videoOptions, function (vidData) {
+      console.log(vidData);
+    });
+
   };
 
   function resultsLoop(data) {
-    $.each(data.items, function (i, item) {
-        let thumb = item.snippet.thumbnails.medium.url;
-        let title = item.snippet.title;
-        let desc = item.snippet.description.substring(0, 100);
-        let vid = item.snippet.resourceId.videoId;
 
-        $('main').append(`<article class="item" data-key="${vid}">
+    if( data.length > 5 ) {
+      $('main').append(`<nav id="videoNav">
+        <ul>
+        </ul>
+      </nav>`);
+      for(let i = 1; i <= Math.ceil(data.length / 5); i++){
+        $('#videoNav').append(`<li> <a href=''>${i}</a> </li>`);
+      }
+    }
+
+
+    $.each(data, function (i, item) {
+        let thumb = item.clipPreview;
+        let desc = item.videoDescription.substring(0, 100);
+        let publicationDate = new Date(Date.parse(item.publishedAt));
+
+        $('#videoWrapper').append(`<article class="item" data-key="${item.id}">
           <img src="${thumb}" alt="playlists member" class="thumb">
 
           <div class="details">
-          <h4>${title}</h4>
+          <h4>${item.videoTitle}</h4>
           <p>${desc}</p>
+          <time> ${publicationDate}</time>
+          <address>${item.channelTitle} </address>
           </div>
          </article>`);
 
@@ -93,4 +121,4 @@ loadVids();
     mainVid(id);
   });
 
-});
+// });
