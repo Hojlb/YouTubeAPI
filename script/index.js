@@ -158,6 +158,12 @@ function loadVids() {
       }
     }
 
+    $('#videoNav li').on('click', function () {
+    //  displayVideoPlaylist(videoStream, 1);
+      console.log(this.textContent);
+    });
+
+
     $('#videoNav li:first-child').attr("style", "border:red 3px solid");
 
     resultsLoop(videoStream[parameter]);
@@ -176,7 +182,7 @@ function loadVids() {
     mainVid(id);
   });
 
-  $('#videoNav li').on('click', function () {
+  $('#videoNav').on('click', function () {
     displayVideoPlaylist(videoStream, 1);
     console.log("hello");
-  }  );
+  });
