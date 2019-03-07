@@ -87,7 +87,6 @@ p, time, address{
 }
 
 .item {
-  height: 330px;
   max-width: 200px;
 
   display: flex;
@@ -123,21 +122,23 @@ p, time, address{
   height: 25px;
 }
 
-nav li {
+#videoNav li{
   display: inline-block;
   padding: 5px 5px;
   margin: 0 5px;
 
-  background-color: red;
+  background-color: #dadada;
+
   border-radius: 50%;
+  border: #dadada 3px solid;
 
   height: 20px;
   width: 20px;
   text-align: center;
 }
 
-nav li a {
-  text-decoration: none;
+#videoNav li:hover {
+  border: red 3px solid;
 }
 
 #video {

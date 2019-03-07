@@ -24,8 +24,8 @@ function loadVids() {
 
       $.getJSON(searchURL, options, function(data){
         let videoStream = videoPicker(data);
-        mainVid(videoStream[0].id);
-        resultsLoop(videoStream);
+        mainVid(videoStream[0][0].id);
+        displayVideoPlaylist(videoStream, 0);
       });
   };
 
@@ -46,21 +46,46 @@ function loadVids() {
 
   function videoPicker(data) {
     let videoStream = [];
-    console.log(data);
+    let count = 6;
+    //console.log(data);
     data.items.forEach( (i) => {
       videoStream.push({
         id: `${i.id.videoId}`,
         videoTitle: `${i.snippet.title}`,
         videoDescription: `${i.snippet.description}`,
-        publishedAt: `${i.snippet.publishedAt}`,
+        publishedAt: Date.parse(`${i.snippet.publishedAt}`),
         channelId: `${i.snippet.channelId}`,
         channelTitle: `${i.snippet.channelTitle}`,
         clipPreview: `${i.snippet.thumbnails.medium.url}`
       });
 
     });
+    videoStream = videosSorter(videoStream, 'publishedAt', count);
     return videoStream;
   };
+
+  function videosSorter(vStream, parameter, count) {
+    let vidArr = [];
+
+    if( vStream[0][parameter] ){
+     vidArr = vStream.sort(function (a, b) {
+       return  b[parameter] - a[parameter];
+     });
+    }
+
+    return splitNavList(vidArr, count);
+
+  };
+
+  function splitNavList(arr, count){
+    let result = [];
+    let countOfSplit = Math.ceil(arr.length / count);
+    for( let i = 0; i < countOfSplit; i++ ){
+      result.push( arr.splice(0, 6) );
+    }
+    return result;
+  }
+
 
   function mainVid(id) {
     $('main').append(`<section id="video"></section>`);
@@ -72,9 +97,9 @@ function loadVids() {
       id: id,
       part: 'statistics' };
 
-    $.getJSON(videosURL, videoOptions, function (vidData) {
-      console.log(vidData);
-    });
+    // $.getJSON(videosURL, videoOptions, function (vidData) {
+    //   //console.log(vidData);
+    // });
 
   };
 
@@ -84,25 +109,24 @@ function loadVids() {
     }
 
     createElement(){
-      let thumb = this.item.clipPreview;
       let desc = this.item.videoDescription.substring(0, 100);
-      let publicationDate = this.dateParse(this.item.publishedAt);
+      let publishedAt = this.dateParse(this.item.publishedAt);
 
       $('#videoWrapper').append(`<article class="item" data-key="${this.item.id}">
-        <img src="${thumb}" alt="playlists member" class="thumb">
+        <img src="${this.item.clipPreview}" alt="playlists member" class="thumb">
 
         <div class="details">
         <h4>${this.item.videoTitle}</h4>
         <p>${desc}</p>
-        <time> ${publicationDate}</time>
+        <time> ${publishedAt}</time>
         <address>${this.item.channelTitle} </address>
         </div>
        </article>`);
     }
 
-    dateParse(date) {
+    dateParse(item) {
 
-      let publicationDate = new Date(Date.parse(date));
+      let publicationDate = new Date(item);
 
       let dd = publicationDate.getDate();
       if (dd < 10) dd = '0' + dd;
@@ -114,35 +138,45 @@ function loadVids() {
       if (yy < 10) yy = '0' + yy;
 
       return dd + '.' + mm + '.' + yy;
-    };
+    }
 
     deleteElement() {
 
     }
-
   };
 
-  function resultsLoop(data) {
+  function displayVideoPlaylist(videoStream, parameter) {
+    let countElemens = videoStream.length;
 
-    if( data.length > 6 ) {
+    if( countElemens > 1 ) {
       $('main').append(`<nav id="videoNav">
         <ul>
         </ul>
       </nav>`);
-      for(let i = 1; i <= Math.ceil(data.length / 6); i++){
-        $('#videoNav').append(`<li> <a href=''>${i}</a> </li>`);
+      for(let i = 1; i <= countElemens; i++){
+        $('#videoNav ul').append(`<li> ${i} </li>`);
       }
     }
 
+    $('#videoNav li:first-child').attr("style", "border:red 3px solid");
+
+    resultsLoop(videoStream[parameter]);
+  }
+
+  function resultsLoop(data) {
     $.each(data, function (i, item) {
       let vItem = new VideoItem(item);
       vItem.createElement();
 
     });
-
   };
 
   $('main').on('click', 'article', function () {
     let id = $(this).attr('data-key');
     mainVid(id);
   });
+
+  $('#videoNav li').on('click', function () {
+    displayVideoPlaylist(videoStream, 1);
+    console.log("hello");
+  }  );
