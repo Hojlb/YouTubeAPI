@@ -1,7 +1,6 @@
 'use strict';
 
-  const key = 'AIzaSyDESXpqfADkPJ0I851gH1BsjIGU57I7m58';
-  //const key= 'AIzaSyCTWC75i70moJLzyNh3tt4jzCljZcRkU8Y';
+  const key= 'AIzaSyCTWC75i70moJLzyNh3tt4jzCljZcRkU8Y';
   // let playlistId = 'PLWKjhJtqVAbkyK9woUZUtunToLtNGoQHB';
   const playlistURL = 'https://www.googleapis.com/youtube/v3/playlistItems';
   const searchURL = 'https://www.googleapis.com/youtube/v3/search';
@@ -158,16 +157,33 @@ function loadVids() {
       }
     }
 
+    decorateNavIndex( $('#videoNav li:first-child')[0] );
+
     $('#videoNav li').on('click', function () {
-    //  displayVideoPlaylist(videoStream, 1);
-      console.log(this.textContent);
+      decorateNavIndex(this);
+      $('#videoWrapper *').remove();
+      resultsLoop(videoStream[+this.textContent-1]);
     });
 
-
-    $('#videoNav li:first-child').attr("style", "border:red 3px solid");
-
     resultsLoop(videoStream[parameter]);
-  }
+  };
+
+  function decorateNavIndex(item) {
+
+    let navElem = '#videoNav li';
+    let attr = {"style": "border:red 3px solid"};
+
+    $(navElem).each(function (i, itm) {
+      if(itm.textContent !== item.textContent ){
+        $(itm).removeAttr("style");
+      } else {
+        for (let key in attr) {
+          $(item).attr(key, attr[key]);
+        };
+      }
+    });
+
+  };
 
   function resultsLoop(data) {
     $.each(data, function (i, item) {
@@ -180,9 +196,4 @@ function loadVids() {
   $('main').on('click', 'article', function () {
     let id = $(this).attr('data-key');
     mainVid(id);
-  });
-
-  $('#videoNav').on('click', function () {
-    displayVideoPlaylist(videoStream, 1);
-    console.log("hello");
   });
